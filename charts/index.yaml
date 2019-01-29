@@ -8,6 +8,6 @@ entries:
     digest: sha256:8fb3bc823a5ce748d34139826385f32b05a1a8e3bb40b4003aff57c36d776e09
     name: node-red-ml
     urls:
-    - http://127.0.0.1:8879/charts/node-red-ml-0.1.0.tgz
+    - https://github.com/CAIOFCP/node-red-ml/blob/master/node-red-ml-0.1.0.tgz
     version: 0.1.0
 generated: 2019-01-27T10:57:21.361196651Z
