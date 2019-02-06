@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: caiofcp/node-red-ml
-  tag: rpi
+  tag: alpine-edge
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -17,7 +17,7 @@ flows: "flows.json"
 timezone: "UTC"
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 1880
   ## Specify the nodePort value for the LoadBalancer and NodePort service types.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
