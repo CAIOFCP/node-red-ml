@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "node-red-ml.name" . }}
+    name: node-red-ml
     release: {{ .Release.Name }}
