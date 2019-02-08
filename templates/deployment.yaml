@@ -7,17 +7,19 @@ metadata:
     helm.sh/chart: {{ include "node-red-ml.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app: node-red-ml
+    release: node-red-ml
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "node-red-ml.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      name: {{ include "node-red-ml.name" . }}
+      release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "node-red-ml.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        name: {{ include "node-red-ml.name" . }}
+        release: {{ .Release.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

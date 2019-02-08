@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: caiofcp/node-red-ml
-  tag: rpi
+  tag: alpine-edge
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -17,18 +17,21 @@ flows: "flows.json"
 timezone: "UTC"
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 1880
   ## Specify the nodePort value for the LoadBalancer and NodePort service types.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
   ##
-  # nodePort:
+  # nodePort: 30001
   ## Provide any additional annotations which may be required. This can be used to
   ## set the LoadBalancer service type to internal only.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
   ##
   annotations: {}
-  labels: {}
+  labels: {
+     app: node-red-ml,
+     release: node-red-ml 
+    }
   ## Use loadBalancerIP to request a specific static IP,
   ## otherwise leave blank
   ##
@@ -42,9 +45,9 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  path: /
+  path: /red
   hosts:
-    - chart-example.local
+    - node-red-ml.powder-dev.de
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -79,9 +82,8 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-nodeSelector: 
-  worker: 01
-
+nodeSelector: {}
+        
 tolerations: []
 
 affinity: {}
