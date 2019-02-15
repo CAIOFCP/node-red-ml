@@ -36,7 +36,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: http    
           env:
             - name: FLOWS
               value: "{{ .Values.flows }}"
@@ -46,17 +46,13 @@ spec:
               value: "{{ .Values.timezone }}"
           volumeMounts:
             - name: data
-              mountPath: /data
+              mountPath: /data  
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       volumes:
-        - name: data
-        {{- if .Values.persistence.enabled }}
-          persistentVolumeClaim:
-            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ template "node-red-ml.fullname" . }}{{- end }}
-        {{- else }}
-          emptyDir: {}
-        {{ end }}
+        - name: config-volume
+          configMap:  
+            name: node-red-ml         
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

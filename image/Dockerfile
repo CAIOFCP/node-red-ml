@@ -1,11 +1,33 @@
-FROM nodered/node-red-docker:latest
-# installing an editor
+FROM multiarch/alpine:aarch64-v3.8
 
-USER root
-RUN mkdir /home/root
-RUN apt-get update && apt-get -y install  python-pip nano
-RUN find /usr/lib/python2.7 -type d -exec chmod 755 {} \;
-RUN find /usr/lib/python2.7/*.py -exec chmod 644 {} \;
-RUN pip install tensorflow keras 
-RUN npm install node-red-dashboard node-red-contrib-python3-function 
+# Experimental ARMv8 support for Node-RED
+RUN apk add nodejs nodejs-npm
 
+# Home directory for Node-RED application source code.
+RUN mkdir -p /usr/src/node-red
+
+# User data directory, contains flows, config and nodes.
+RUN mkdir /data
+
+WORKDIR /usr/src/node-red
+
+# Add node-red user so we aren't running as root.
+RUN addgroup -S node-red && adduser -S node-red -G node-red \
+    && chown -R node-red:node-red /data \
+    && chown -R node-red:node-red /usr/src/node-red
+
+USER node-red
+
+# package.json contains Node-RED NPM module and node dependencies
+COPY package.json /usr/src/node-red/
+COPY settings.js /usr/src/node-red/
+
+RUN npm install
+
+# User configuration directory volume
+EXPOSE 1880
+
+# Environment variable holding file path for flows configuration
+ENV FLOWS=flows.json
+
+CMD ["npm", "start", "--", "--userDir", "/data"]
