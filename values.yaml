@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: caiofcp/node-red-ml
-  tag: alpine-edge
+  tag: edge
   pullPolicy: IfNotPresent
 
 nameOverride: ""
